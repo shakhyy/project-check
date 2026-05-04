@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Medical Care Bot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="app-shell">
+        <section class="hero-panel" aria-label="AI Medical Care Bot overview">
+            <nav class="topbar" aria-label="Application navigation">
+                <div class="brand">
+                    <span class="brand-mark" aria-hidden="true">+</span>
+                    <span>AI Medical Care Bot</span>
+                </div>
+                <span class="status-pill">
+                    <span class="status-dot" aria-hidden="true"></span>
+                    Online triage assistant
+                </span>
+                <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">Dark mode</button>
+            </nav>
+
+            <div class="hero-grid">
+                <div class="hero-copy">
+                    <span class="eyebrow">Smart healthcare assistant</span>
+                    <h1>Fast symptom guidance with a calm clinical experience.</h1>
+                    <p>
+                        Enter patient details, describe symptoms naturally, and receive instant
+                        condition suggestions, severity alerts, and practical next steps.
+                    </p>
+                </div>
+
+                <aside class="insight-card" aria-label="Care summary">
+                    <div>
+                        <span class="metric-label">Response mode</span>
+                        <strong>AI assisted</strong>
+                    </div>
+                    <div>
+                        <span class="metric-label">History saved</span>
+                        <strong>Last 5 chats</strong>
+                    </div>
+                    <div>
+                        <span class="metric-label">Safety layer</span>
+                        <strong>Severity checks</strong>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <section class="workspace">
+            <aside class="profile-card card">
+                <div class="section-heading">
+                    <span class="section-icon" aria-hidden="true">01</span>
+                    <div>
+                        <h2>Patient Profile</h2>
+                        <p>Used in the downloadable report.</p>
+                    </div>
+                </div>
+
+                <form class="profile-form" autocomplete="on">
+                    <label for="patientName">
+                        Full name
+                        <input id="patientName" type="text" placeholder="e.g. Aisha Sharma">
+                    </label>
+
+                    <label for="patientAge">
+                        Age
+                        <input id="patientAge" type="number" min="1" max="120" placeholder="e.g. 21">
+                    </label>
+
+                    <label for="patientGender">
+                        Gender
+                        <select id="patientGender">
+                            <option value="">Select gender</option>
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                            <option value="Other">Other</option>
+                            <option value="Prefer not to say">Prefer not to say</option>
+                        </select>
+                    </label>
+                </form>
+
+                <div class="vitals-box">
+                    <div class="section-heading compact-heading">
+                        <span class="section-icon" aria-hidden="true">02</span>
+                        <div>
+                            <h2>Vitals</h2>
+                            <p>Optional values improve risk scoring.</p>
+                        </div>
+                    </div>
+
+                    <div class="vitals-grid">
+                        <label for="temperature">
+                            Temp (F)
+                            <input id="temperature" type="number" min="90" max="110" step="0.1" placeholder="98.6">
+                        </label>
+
+                        <label for="oxygen">
+                            SpO2 (%)
+                            <input id="oxygen" type="number" min="50" max="100" placeholder="98">
+                        </label>
+
+                        <label for="heartRate">
+                            Pulse
+                            <input id="heartRate" type="number" min="30" max="220" placeholder="78">
+                        </label>
+                    </div>
+
+                    <div class="risk-card" id="riskCard">
+                        <span>Current risk</span>
+                        <strong id="riskScore">Low</strong>
+                        <small id="riskNote">Add symptoms to calculate.</small>
+                    </div>
+                </div>
+
+                <div class="history-box">
+                    <div class="history-title">
+                        <h3>Recent Chats</h3>
+                        <span id="historyCount">0 saved</span>
+                    </div>
+                    <ul id="historyList" class="history-list"></ul>
+                </div>
+            </aside>
+
+            <section class="chat-card card" aria-label="AI medical chat">
+                <div class="chat-header">
+                    <div class="assistant-avatar" aria-hidden="true">AI</div>
+                    <div>
+                        <h2>Medical Care Assistant</h2>
+                        <p>Describe symptoms such as fever, cough, headache, vomiting, chest pain.</p>
+                    </div>
+                </div>
+
+                <div id="chatMessages" class="chat-messages" aria-live="polite"></div>
+
+                <div id="typingIndicator" class="typing-indicator" hidden>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    AI is typing...
+                </div>
+
+                <div id="emergencyBanner" class="emergency-banner" hidden>
+                    Serious symptoms detected. Please seek urgent medical help if this is happening now.
+                </div>
+
+                <div class="quick-symptoms" aria-label="Quick symptom buttons">
+                    <button type="button" data-symptom="fever">Fever</button>
+                    <button type="button" data-symptom="cough">Cough</button>
+                    <button type="button" data-symptom="headache">Headache</button>
+                    <button type="button" data-symptom="vomiting">Vomiting</button>
+                    <button type="button" data-symptom="chest pain">Chest Pain</button>
+                    <button type="button" data-symptom="breathing problem">Breathing Problem</button>
+                </div>
+
+                <div class="chat-input-row">
+                    <input
+                        id="symptomInput"
+                        type="text"
+                        placeholder="Type symptoms here..."
+                        aria-label="Enter symptoms"
+                    >
+                    <button id="sendBtn" class="primary-btn" type="button">Send</button>
+                </div>
+
+                <div class="action-row">
+                    <button id="clearBtn" class="secondary-btn" type="button">Clear Chat</button>
+                    <button id="downloadBtn" class="secondary-btn" type="button">Download Report</button>
+                    <button id="doctorBtn" class="secondary-btn" type="button">Find Nearby Doctor</button>
+                </div>
+
+                <p class="disclaimer">
+                    This assistant provides basic educational guidance only and is not a medical diagnosis.
+                    For emergencies or severe symptoms, contact a doctor immediately.
+                </p>
+            </section>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
